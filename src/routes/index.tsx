@@ -1,24 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Gamepad2, Headphones, PackageCheck, ShieldCheck, Truck, Wrench } from "lucide-react";
+import { StoreLayout } from "@/components/store-layout"; import { ProductGrid } from "@/components/product-grid"; import { Button } from "@/components/ui/button"; import { getProducts } from "@/lib/shopify"; import hero from "@/assets/pcvex-hero.jpg";
+export const Route=createFileRoute("/")({loader:()=>getProducts(6),head:()=>({meta:[{title:"PcVex | Todo para tu PC"},{name:"description",content:"Componentes y periféricos seleccionados para mejorar tu setup."},{property:"og:title",content:"PcVex | Todo para tu PC"},{property:"og:description",content:"Componentes y periféricos seleccionados para mejorar tu setup."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:Home});
+const categories=[{name:"Componentes",icon:Wrench},{name:"Periféricos",icon:Headphones},{name:"Gaming",icon:Gamepad2},{name:"Accesorios",icon:PackageCheck}];
+function Home(){const products=Route.useLoaderData();return <StoreLayout>
+  <section className="relative min-h-[560px] overflow-hidden md:min-h-[650px]"><img src={hero} alt="Setup moderno con PC y periféricos" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover object-[68%_center]"/><div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/10"/><div className="relative mx-auto flex min-h-[560px] max-w-7xl items-center px-4 py-20 sm:px-6 md:min-h-[650px] lg:px-8"><div className="max-w-xl"><p className="mb-5 text-sm font-bold uppercase text-accent-blue">Potenciá tu setup</p><h1 className="text-4xl font-bold leading-tight sm:text-6xl">Todo para tu PC,<br/>en un solo lugar.</h1><p className="mt-6 max-w-lg text-base leading-7 text-muted-foreground sm:text-lg">Componentes y periféricos seleccionados para mejorar tu setup.</p><Button asChild variant="accent" size="lg" className="mt-8"><Link to="/productos">Ver productos <ArrowRight/></Link></Button></div></div></section>
+  <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8"><div className="mb-10 flex items-end justify-between gap-4"><div><p className="text-sm font-bold text-accent-blue">SELECCIÓN PCVEX</p><h2 className="mt-2 text-3xl font-bold sm:text-4xl">Productos destacados</h2></div><Link to="/productos" className="hidden items-center gap-2 text-sm font-semibold sm:flex">Ver todos <ArrowRight className="h-4 w-4"/></Link></div><ProductGrid products={products}/></section>
+  <section className="border-y border-border bg-surface-subtle"><div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8"><h2 className="text-3xl font-bold">Comprá por categoría</h2><div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">{categories.map(({name,icon:Icon})=><Link key={name} to="/productos" search={{categoria:name}} className="group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-background p-5 transition hover:border-accent-blue"><Icon className="h-7 w-7 text-accent-blue"/><div className="flex items-center justify-between font-semibold">{name}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1"/></div></Link>)}</div></div></section>
+  <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8"><div className="grid items-center gap-8 rounded-lg bg-primary px-6 py-10 text-primary-foreground md:grid-cols-[1fr_auto] md:px-12"><div><h2 className="text-3xl font-bold">Armá tu setup.</h2><p className="mt-3 text-primary-foreground/70">Encontrá los productos que necesitás para llevar tu PC al siguiente nivel.</p></div><Button asChild variant="accent" size="lg"><Link to="/productos">Ver productos <ArrowRight/></Link></Button></div></section>
+  <section className="border-t border-border"><div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 md:grid-cols-3 lg:px-8">{[[ShieldCheck,"Compra segura","Tu compra protegida en cada paso."],[Truck,"Envíos","Seguimiento claro de tu pedido."],[Headphones,"Atención personalizada","Te ayudamos a elegir lo indicado."]].map(([Icon,title,text])=>{const I=Icon as typeof ShieldCheck;return <div key={String(title)} className="flex gap-4"><I className="h-6 w-6 shrink-0 text-accent-blue"/><div><h3 className="font-semibold">{String(title)}</h3><p className="mt-1 text-sm text-muted-foreground">{String(text)}</p></div></div>})}</div></section>
+ </StoreLayout>}
