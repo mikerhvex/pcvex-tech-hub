@@ -1,0 +1,8 @@
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { Menu, Search, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CartDrawer } from "./cart-drawer";
+import logo from "@/assets/pcvex-logo-concept-2.png";
+const links=[{to:"/" as const,label:"Inicio"},{to:"/productos" as const,label:"Productos"},{to:"/ofertas" as const,label:"Ofertas"},{to:"/contacto" as const,label:"Contacto"}];
+export function SiteHeader(){const[open,setOpen]=useState(false);return <header className="sticky top-0 z-40 border-b border-border/70 bg-background/90 backdrop-blur-xl"><div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 lg:flex lg:h-20 lg:px-8"><Link to="/" className="min-w-0 lg:mr-12"><img src={logo} alt="PcVex" width={1024} height={1024} className="h-8 w-auto max-w-32 object-contain object-left"/></Link><nav className="hidden min-w-0 flex-1 items-center gap-8 lg:flex">{links.map((link)=><Link key={link.to} to={link.to} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground active:text-accent-blue">{link.label}</Link>)}</nav><div className="flex shrink-0 items-center gap-1"><Button variant="ghost" size="icon" aria-label="Buscar"><Search/></Button><CartDrawer/><Button variant="ghost" size="icon" className="lg:hidden" aria-label="Abrir menú" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</Button></div></div>{open&&<nav className="border-t border-border bg-background px-4 py-4 lg:hidden">{links.map((link)=><Link key={link.to} to={link.to} onClick={()=>setOpen(false)} className="block py-3 text-base font-semibold">{link.label}</Link>)}</nav>}</header>}
